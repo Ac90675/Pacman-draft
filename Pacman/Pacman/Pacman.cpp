@@ -72,13 +72,16 @@ void Pacman::Update(int elapsedTime)
 
 	if (keyboardState->IsKeyDown(Input::Keys::P))
 	{
-		_paused = !_paused;
-		_pKeyDown = true;
+		if (!_pKeyDown)
+		{
+			_paused = !_paused;
+			_pKeyDown = true;
+		}
 	}
 
 	if (keyboardState->IsKeyUp(Input::Keys::P))
 	{
-		_pKeyDown =false;
+		_pKeyDown = false;
 	}
 	
 	if (_pacmanCurrentFrameTime > _cPacmanFrameTime)
