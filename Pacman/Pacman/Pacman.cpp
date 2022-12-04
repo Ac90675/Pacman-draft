@@ -70,6 +70,12 @@ void Pacman::Update(int elapsedTime)
 		}
 	}
 
+	Pause(keyboardState, elapsedTime);
+	
+}
+
+void Pacman::Pause(Input::KeyboardState* keyboardState, int elapsedTime)
+{
 	if (keyboardState->IsKeyDown(Input::Keys::P))
 	{
 		if (!_pKeyDown)
@@ -83,7 +89,7 @@ void Pacman::Update(int elapsedTime)
 	{
 		_pKeyDown = false;
 	}
-	
+
 	if (_pacmanCurrentFrameTime > _cPacmanFrameTime)
 	{
 		_pacmanFrame++;
@@ -106,7 +112,7 @@ void Pacman::Update(int elapsedTime)
 		{
 			_pacmanPosition->Y -= _cPacmanSpeed * elapsedTime; //Moves Pacman across X axis
 			_pacmanSourceRect->Y = 96.0f;
-	}
+		}
 		else if (keyboardState->IsKeyDown(Input::Keys::S))
 		{
 			_pacmanPosition->Y += _cPacmanSpeed * elapsedTime; //Moves Pacman across X axis
@@ -124,7 +130,7 @@ void Pacman::Update(int elapsedTime)
 		{  // Pacman hit right wall - reset his position
 			_pacmanPosition->X = -_pacmanSourceRect->Width;
 		}
-		
+
 	}
 }
 

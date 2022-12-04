@@ -65,4 +65,6 @@ public:
 
 	/// <summary> Called every frame - draw game here. </summary>
 	void virtual Draw(int elapsedTime);
+
+	void Pause(Input::KeyboardState* keyboardState, int elapsedTime);
 };
