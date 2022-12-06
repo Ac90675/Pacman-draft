@@ -63,44 +63,21 @@ void Pacman::Update(int elapsedTime)
 
 	if (_startsc)
 	{
-
 		if (keyboardState->IsKeyDown(Input::Keys::SPACE))
 		{
 			_startsc = !_startsc;
 		}
 	}
 
+	// Check for pause button input. Toggle pause when pressed.
 	Pause(keyboardState, elapsedTime);
-	
-}
 
-void Pacman::Pause(Input::KeyboardState* keyboardState, int elapsedTime)
-{
-	if (keyboardState->IsKeyDown(Input::Keys::P))
-	{
-		if (!_pKeyDown)
-		{
-			_paused = !_paused;
-			_pKeyDown = true;
-		}
-	}
-
-	if (keyboardState->IsKeyUp(Input::Keys::P))
-	{
-		_pKeyDown = false;
-	}
-
-	if (_pacmanCurrentFrameTime > _cPacmanFrameTime)
-	{
-		_pacmanFrame++;
-
-		if (_pacmanFrame >= 2)
-			_pacmanFrame = 0;
-		_pacmanCurrentFrameTime = 0;
-	}
-
+	// Player movement in 4 directions. Prioritises horizontal movement.
 	if (!_paused)
 	{
+		// Check if moving horizontally
+		bool isMovingOnX = keyboardState->IsKeyDown(Input::Keys::D) || keyboardState->IsKeyDown(Input::Keys::A);
+
 		// Checks if D key is pressed
 		if (keyboardState->IsKeyDown(Input::Keys::D))
 		{
@@ -108,14 +85,14 @@ void Pacman::Pause(Input::KeyboardState* keyboardState, int elapsedTime)
 			_pacmanPosition->X += _cPacmanSpeed * elapsedTime; //Moves Pacman across X axis
 			_pacmanSourceRect->Y = 0.0f;
 		}
-		else if (keyboardState->IsKeyDown(Input::Keys::W))
+		else if (keyboardState->IsKeyDown(Input::Keys::W) && !isMovingOnX)
 		{
-			_pacmanPosition->Y -= _cPacmanSpeed * elapsedTime; //Moves Pacman across X axis
+			_pacmanPosition->Y -= _cPacmanSpeed * elapsedTime; //Moves Pacman across Y axis
 			_pacmanSourceRect->Y = 96.0f;
 		}
-		else if (keyboardState->IsKeyDown(Input::Keys::S))
+		else if (keyboardState->IsKeyDown(Input::Keys::S) && !isMovingOnX)
 		{
-			_pacmanPosition->Y += _cPacmanSpeed * elapsedTime; //Moves Pacman across X axis
+			_pacmanPosition->Y += _cPacmanSpeed * elapsedTime; //Moves Pacman across Y axis
 			_pacmanSourceRect->Y = 32.0f;
 			_pacmanDirection = 1;
 		}
@@ -131,6 +108,30 @@ void Pacman::Pause(Input::KeyboardState* keyboardState, int elapsedTime)
 			_pacmanPosition->X = -_pacmanSourceRect->Width;
 		}
 
+	}
+	
+}
+
+void Pacman::Pause(Input::KeyboardState* keyboardState, int elapsedTime)
+{
+	if (keyboardState->IsKeyDown(Input::Keys::P) && !_pKeyDown)
+	{
+		_paused = !_paused;
+		_pKeyDown = true;
+	}
+
+	if (keyboardState->IsKeyUp(Input::Keys::P))
+	{
+		_pKeyDown = false;
+	}
+
+	if (_pacmanCurrentFrameTime > _cPacmanFrameTime)
+	{
+		_pacmanFrame++;
+
+		if (_pacmanFrame >= 2)
+			_pacmanFrame = 0;
+		_pacmanCurrentFrameTime = 0;
 	}
 }
 
