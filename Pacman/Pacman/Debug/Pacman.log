@@ -10,5 +10,6 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.33.3162
               _Ty=S2D::Input::Keys
           ]
 C:\Users\Stephen Callum\Downloads\Pacman\Pacman\Pacman\S2D\Input.h(108): message : see reference to class template instantiation 'std::vector<S2D::Input::Keys,std::allocator<S2D::Input::Keys>>' being compiled
-C:\Users\Stephen Callum\Downloads\Pacman\Pacman\Pacman\Pacman.cpp(108,25): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Stephen Callum\Downloads\Pacman\Pacman\Pacman\Pacman.cpp(119,50): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Stephen Callum\Downloads\Pacman\Pacman\Pacman\Pacman.cpp(127,51): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   Pacman.vcxproj -> C:\Users\Stephen Callum\Downloads\Pacman\Pacman\Debug\Pacman.exe
