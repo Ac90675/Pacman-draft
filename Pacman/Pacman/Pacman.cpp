@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-Pacman::Pacman(int argc, char* argv[]) : Game(argc, argv), _cPacmanSpeed(0.1f), _cPacmanFrameTime(250)
+Pacman::Pacman(int argc, char* argv[]) : Game(argc, argv), _cPacmanSpeed(0.9f), _cPacmanFrameTime(250)
 {
 	_pacmanCurrentFrameTime = 0; 
 	_pacmanFrame = 0;
@@ -69,7 +69,6 @@ void Pacman::Update(int elapsedTime)
 		}
 	}
 
-	// Check for pause button input. Toggle pause when pressed.
 	Pause(keyboardState, elapsedTime);
 
 	// Player movement in 4 directions. Prioritises horizontal movement.
@@ -79,6 +78,7 @@ void Pacman::Update(int elapsedTime)
 		bool isMovingOnX = keyboardState->IsKeyDown(Input::Keys::D) || keyboardState->IsKeyDown(Input::Keys::A);
 
 		// Checks if D key is pressed
+		// TODO: why is each direction different?
 		if (keyboardState->IsKeyDown(Input::Keys::D))
 		{
 			_pacmanCurrentFrameTime += elapsedTime; //For checking how many frames have elapsed
@@ -101,17 +101,37 @@ void Pacman::Update(int elapsedTime)
 			_pacmanPosition->X -= _cPacmanSpeed * elapsedTime; //Moves Pacman across X axis
 			_pacmanSourceRect->Y = 64.0f;
 		}
-		// Checks if pacman is trying to disappear
-		if (_pacmanPosition->X > Graphics::GetViewportHeight())
+	}
 
-		{  // Pacman hit right wall - reset his position
-			_pacmanPosition->X = -_pacmanSourceRect->Width;
-		}
+	// Checks if pacman is trying to disappear
+	float horizontalPos = _pacmanPosition->X + _pacmanSourceRect->Width;
+	float verticalPos = _pacmanPosition->Y + _pacmanSourceRect->Height;
 
+	// Check right & left sides of screen
+	if (horizontalPos > Graphics::GetViewportWidth() + _pacmanSourceRect->Width)
+	{  
+		// Pacman passed right wall - reset his X position to left wall
+		_pacmanPosition->X = 0;
+	}
+	if (horizontalPos < 0)
+	{
+		// Pacman passed left wall - reset his X position to right wall
+		_pacmanPosition->X = Graphics::GetViewportWidth();
+	}
+	if (verticalPos > Graphics::GetViewportHeight() + _pacmanSourceRect->Height)
+	{
+		// Pacman passed bottom wall - reset his Y position to top wall
+		_pacmanPosition->Y = 0;
+	}
+	if (verticalPos < 0)
+	{
+		// Pacman passed top wall - reset his Y position to bottom wall
+		_pacmanPosition->Y = Graphics::GetViewportHeight();
 	}
 	
 }
 
+// Check for pause button input. Toggle pause when pressed.
 void Pacman::Pause(Input::KeyboardState* keyboardState, int elapsedTime)
 {
 	if (keyboardState->IsKeyDown(Input::Keys::P) && !_pKeyDown)
